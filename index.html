@@ -23,13 +23,12 @@
 
     <header class="header">
       <div class="header__inner">
-        <a class="brand" href="#home" aria-label="Go to Home">
+        <a class="brand" href="#about" aria-label="Go to Home">
           <span class="brand__mark">◼</span>
           <span class="brand__text">José Bárria</span>
         </a>
 
         <nav class="nav" aria-label="Primary">
-          <a class="nav__link" href="#home">Home</a>
           <a class="nav__link" href="#about">About me</a>
           <a class="nav__link" href="#career">My Career</a>
           <a class="nav__link" href="#contact">Contact</a>
@@ -39,7 +38,7 @@
 
     <main class="main">
       <!-- HOME -->
-      <section id="home" class="section section--hero reveal">
+      <!-- <section id="home" class="section section--hero reveal">
         <div class="container">
           <p class="eyebrow">SOFTWARE ENGINEERING / CHESS</p>
           <h1 class="title">
@@ -62,55 +61,179 @@
             <span class="hint__text">Scroll for more</span>
           </div>
         </div>
-      </section>
+      </section> -->
 
       <!-- ABOUT -->
-      <section id="about" class="section reveal">
+      <section id="about" class="section">
         <div class="container">
           <h2 class="section__title">About me</h2>
-          <p class="section__text">
-            I have been playing chess since I was 4 years old and started competing in chess tournaments at 10. 
-            Fast forward 13 years, I am finishing my Msc in Software Engineering and Computer Science
-            at Instituto Superior Técnico - Lisbon, while looking to improve as much as possible on the 64 
-            squares and go from International Master to the highest chess honor - Grandmaster.
-          </p>
+          <div class="about__content">
+            <div class="about__text">
+              <p class="section__text">
+                Hello! My name is José Bárria. I am 22-year-old Software Engineer with a strong passion for chess. <br/>
+                I have been playing chess since I was 4 years old and started competing in chess tournaments at 10,
+                having played in countless tournaments ever since. There have been many memorable moments throughout
+                my journey, and now, 13 years later, I am finishing my Msc in Software Engineering and Computer Science
+                at Instituto Superior Técnico - Lisbon, while trying to reach the highest chess honor possible - 
+                the Grandmaster title. <br/>
+                About 6 years ago, around the time of the pandemic, I also started teaching chess online. I've had quite
+                some teaching experience already, having taught lots of players, including national champions.
+              </p>
 
-          <div class="cards">
-            <article class="card">
-              <h3 class="card__title">Goal</h3>
-              <p class="card__text">
-                Grandmaster: I need to get
-                <span class="tooltip">
-                  3 GM Norms
-                  <span class="tooltip__content">
-                    A GM norm is achieved by scoring a required performance rating
-                    in an international tournament against very strong opponents.
-                  </span>
-                </span>
-                and surpass <span class="tooltip">
-                  2500 FIDE Elo
-                  <span class="tooltip__content">
-                    FIDE Elo is a numerical rating system that rules the chess world.
-                    FIDE is the Chess International Federation.
-                  </span>
-                </span>
-                to achieve the title.
-              </p>
-            </article>
-            </article>
-            <article class="card">
-              <h3 class="card__title">Currently</h3>
-              <p class="card__text">I am investing a lot of time and money into chess and we'll see how far I can get!</p>
-            </article>
-            <article class="card">
-              <h3 class="card__title">Eternal Learner</h3>
-              <p class="card__text">Being an obsessive learner, I love sports, 
-                learning new languages, and stuff like that. I currently speak Portuguese, English and Spanish flutently
-                and am looking to expand that in the future!
-              </p>
-            </article>
+              <div class="progress-container">
+                <span class="progress-status-centered">Current: 2374 Elo</span>
+
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 80%;"></div>
+                  
+                  <div class="milestone-dot dot--0" data-label="0" data-info="The first rating I ever had was actually 1538. Achieved Feb 2015"></div>
+                  <div class="milestone-dot dot--2000" data-label="2000" data-info="So called expert level. Achieved Jan 2018"></div>
+                  <div class="milestone-dot dot--2300" data-label="2300 (FM)" data-info="Huge breakthrough for me. Achieved Oct 2020"></div>
+                  <div class="milestone-dot dot--2400" data-label="2400 (IM)" data-info="Took me a while. Achieved Sept 2025"></div>
+                  <div class="milestone-dot dot--2500" data-label="2500 (GM)" data-info="The highest honor in chess. Working on it!"></div>
+                </div>
+              </div>
+              <!-- <div class="cards">
+                <article class="card">
+                  <h3 class="card__title">Goal</h3>
+                  <p class="card__text">
+                    Grandmaster: I need to get
+                    <span class="tooltip">
+                      3 GM Norms
+                      <span class="tooltip__content">
+                        A GM norm is achieved by scoring a required performance rating
+                        in an international tournament against very strong opponents.
+                      </span>
+                    </span>
+                    and surpass <span class="tooltip">
+                      2500 FIDE Elo
+                      <span class="tooltip__content">
+                        FIDE Elo is a numerical rating system that rules the chess world.
+                        FIDE is the Chess International Federation.
+                      </span>
+                    </span>
+                    to achieve the title.
+                  </p>
+                </article>
+                </article>
+                <article class="card">
+                  <h3 class="card__title">Currently</h3>
+                  <p class="card__text">I am investing a lot of time and money into chess and we'll see how far I can get!</p>
+                </article>
+                <article class="card">
+                  <h3 class="card__title">Eternal Learner</h3>
+                  <p class="card__text">Being an obsessive learner, I love sports, 
+                    learning new languages, and stuff like that. I currently speak Portuguese, English and Spanish flutently
+                    and am looking to expand that in the future!
+                  </p>
+                </article>
+              </div> -->
+            </div>
+
+            <div class="about__image">
+              <img src="./images/fato_2.jpg" alt="José Bárria" class="profile-img">
+            </div>
+
           </div>
         </div>
+      </section>
+
+      <!-- CAREER -->
+      <section id="career" class="section reveal">
+        <div class="container">
+          <h2 class="section__title">My Career</h2>
+          <p class="section__text">
+            A couple moments that were remarkable in my career.
+          </p>
+          <div class="career-timeline-wrapper">
+            <div class="career-timeline">
+              <article class="milestone">
+                <div class="milestone__left">
+                  <time class="milestone__date">2025</time>
+                </div>
+
+                <div class="milestone__card">
+                  <ul>
+                    <li>
+                      <h3 class="milestone__title">Reached IM title 🥳</h3>
+                      <p class="milestone__meta">Made my last norm in the Pontevedra Open • Pontevedra, Spain</p>
+                    </li>
+                    <li>
+                      <h3 class="milestone__title">National Blitz Championship 🥇</h3>
+                      <p class="milestone__meta">Regained the title! • Lisboa, Portugal</p>
+                    </li>   
+                  </ul>
+                </div>
+              </article>
+
+              <article class="milestone">
+                <div class="milestone__left">
+                  <time class="milestone__date">2023</time>
+                </div>
+
+                <div class="milestone__card">
+                  <ul>
+                    <li>
+                      <h3 class="milestone__title">Started Master's Degree 👾</h3>
+                      <p class="milestone__meta">Minor in Artififcial Intelligence • Insituto Superior Técnico - Lisboa</p>
+                    </li>
+                    <li>
+                      <h3 class="milestone__title">National Classical Championship 🥇</h3>
+                      <p class="milestone__meta">My greatest achievement to date! 8/9pts • Coimbra, Portugal</p>
+                    </li> 
+                    <li>
+                      <h3 class="milestone__title">Finished Bachelor's Degree 👨‍🎓</h3>
+                      <p class="milestone__meta">GPA of 14.0/20 • Insituto Superior Técnico - Lisboa</p>
+                    </li>
+                    <li>
+                      <h3 class="milestone__title">National Blitz Championship 🥇</h3>
+                      <p class="milestone__meta">First national win. • Setúbal, Portugal</p>
+                    </li>                 
+                  </ul>
+                </div>
+              </article>
+
+              <article class="milestone">
+                <div class="milestone__left">
+                  <time class="milestone__date">2021</time>
+                </div>
+
+                <div class="milestone__card">
+                  <ul>        
+                    <li>
+                      <h3 class="milestone__title">Started Bachelor's Degree 👨‍🎓</h3>
+                      <p class="milestone__meta">Computer Science and Software Engineering • Instituto Superior Técnico - Lisboa</p>
+                    </li>
+                    <li>
+                      <h3 class="milestone__title">Graduated High School 👨‍🎓</h3>
+                      <p class="milestone__meta">GPA of 17.7/20 • Cascais High School - Cascais</p>
+                    </li>    
+                  </ul>
+                </div>
+              </article>
+
+              <article class="milestone">
+                <div class="milestone__left">
+                  <time class="milestone__date">2020</time>
+                </div>
+
+                <div class="milestone__card">
+                  <ul>
+                    <li>
+                      <h3 class="milestone__title">Reached FM title ⏫</h3>
+                      <p class="milestone__meta">Finally! • Figueira da Foz, Portugal</p>
+                    </li>
+                    <li>
+                      <h3 class="milestone__title">National Youth Championship 🥇</h3>
+                      <p class="milestone__meta">The first time I won it. A huge turning point in my chess career • Pombal, Portugal</p>
+                    </li>       
+                  </ul>
+                </div>
+              </article>
+
+            </div>
+          </div>
+      </div>
       </section>
 
       <!-- CLASSES
@@ -150,110 +273,12 @@
       </section>
       -->
 
-      <!-- CAREER -->
-      <section id="career" class="section reveal">
-        <div class="container">
-          <h2 class="section__title">My Career</h2>
-          <p class="section__text">
-            A couple moments that were remarkable/life-changing to me.
-          </p>
-          <div class="career-timeline-wrapper">
-            <div class="career-timeline">
-              <article class="milestone">
-                <div class="milestone__left">
-                  <time class="milestone__date">2025</time>
-                </div>
-
-                <div class="milestone__card">
-                  <ul>
-                    <li>
-                      <h3 class="milestone__title">National Blitz Championship 🥇</h3>
-                      <p class="milestone__meta">Regained the title! • Lisboa, Portugal</p>
-                    </li>
-                    <li>
-                      <h3 class="milestone__title">Reached IM title 🥳</h3>
-                      <p class="milestone__meta">Made my last norm in the Pontevedra Open • Pontevedra, Spain</p>
-                    </li>
-                  </ul>
-                </div>
-              </article>
-
-              <article class="milestone">
-                <div class="milestone__left">
-                  <time class="milestone__date">2023</time>
-                </div>
-
-                <div class="milestone__card">
-                  <ul>
-                    <li>
-                      <h3 class="milestone__title">National Blitz Championship 🥇</h3>
-                      <p class="milestone__meta">First national win. • Setúbal, Portugal</p>
-                    </li>
-                    <li>
-                      <h3 class="milestone__title">Finished Bachelor's Degree 👨‍🎓</h3>
-                      <p class="milestone__meta">Grade Average of 14.0/20 • Insituto Superior Técnico - Lisboa</p>
-                    </li>
-                    <li>
-                      <h3 class="milestone__title">National Classical Championship 🥇</h3>
-                      <p class="milestone__meta">My greatest achievement to date! 8/9pts • Coimbra, Portugal</p>
-                    </li>     
-                    <li>
-                      <h3 class="milestone__title">Started Master's Degree 👾</h3>
-                      <p class="milestone__meta">Minor in Artififcial Intelligence • Insituto Superior Técnico - Lisboa</p>
-                    </li>     
-                  </ul>
-                </div>
-              </article>
-
-              <article class="milestone">
-                <div class="milestone__left">
-                  <time class="milestone__date">2021</time>
-                </div>
-
-                <div class="milestone__card">
-                  <ul>
-                    <li>
-                      <h3 class="milestone__title">Graduated High School 👨‍🎓</h3>
-                      <p class="milestone__meta">Grade Average of 17.7/20 • Cascais High School - Cascais</p>
-                    </li>  
-                    <li>
-                      <h3 class="milestone__title">Started Bachelor's Degree 👨‍🎓</h3>
-                      <p class="milestone__meta">Computer Science and Software Engineering • Instituto Superior Técnico - Lisboa</p>
-                    </li>   
-                  </ul>
-                </div>
-              </article>
-
-              <article class="milestone">
-                <div class="milestone__left">
-                  <time class="milestone__date">2020</time>
-                </div>
-
-                <div class="milestone__card">
-                  <ul>
-                    <li>
-                      <h3 class="milestone__title">National Youth Championship 🥇</h3>
-                      <p class="milestone__meta">The first time I won it. A huge turning point in my chess career • Pombal, Portugal</p>
-                    </li>
-                    <li>
-                      <h3 class="milestone__title">Reached FM title ⏫</h3>
-                      <p class="milestone__meta">Finally! • Figueira da Foz, Portugal</p>
-                    </li>       
-                  </ul>
-                </div>
-              </article>
-
-            </div>
-          </div>
-      </div>
-      </section>
-
       <!-- CONTACT -->
       <section id="contact" class="section reveal">
         <div class="container">
           <h2 class="section__title">Contact</h2>
           <p class="section__text">
-            Feel free to contact me about anything!
+            Feel free to send a message regarding classes, tournaments, or anything else!
           </p>
 
           <div class="contact">
@@ -269,25 +294,29 @@
               </div>
             </div>
 
-            <form class="form" onsubmit="return false;">
+            <form class="form" id="contact-form">
+              <input type="hidden" name="access_key" value="e2c02166-8454-48e5-b2c0-4db58735a59f">
+              <input type="hidden" name="subject" value="New message from josebarria.github.io">
+
               <label class="form__label">
                 Name
-                <input class="form__input" type="text" placeholder="Your name" />
+                <input class="form__input" type="text" name="name" placeholder="Your name" required />
               </label>
 
               <label class="form__label">
                 Message
-                <textarea class="form__textarea" rows="4" placeholder="Write something…"></textarea>
+                <textarea class="form__textarea" name="message" rows="4" placeholder="Write something…" required></textarea>
               </label>
 
-              <button class="btn btn--primary" type="submit">Send (Not yet available)</button>
+              <button class="btn btn--primary" type="submit" id="contact-submit">Send</button>
+              <p id="contact-result" class="form__hint" style="display:none;"></p>
             </form>
           </div>
 
           <footer class="footer">
             <span>© <span id="year"></span> José Bárria</span>
             <span class="footer__sep">•</span>
-            <a href="#home" class="footer__link">Back to top</a>
+            <a href="#about" class="footer__link">Back to top</a>
           </footer>
         </div>
       </section>
