@@ -32,6 +32,7 @@
           <a class="nav__link" href="#about">About me</a>
           <a class="nav__link" href="#career">My Career</a>
           <a class="nav__link" href="#contact">Contact</a>
+          <a class="nav__link nav__link--accent" href="novelty-hunter.html">Novelty Hunter <span class="badge-new">New!</span></a>
         </nav>
       </div>
     </header>
@@ -272,6 +273,42 @@
         </div>
       </section>
       -->
+
+      <!-- NOVELTY HUNTER -->
+      <section id="novelty-hunter" class="section reveal">
+        <div class="container">
+          <h2 class="section__title">Novelty Hunter <span class="badge-new">New!</span></h2>
+          <p class="section__text">
+            Searching for novelties in chess is some serious grunt work. You have to manually
+            go through game after game, looking for interesting moves, and it just takes too much time.
+            So I came up with the idea of creating Novelty Hunter. This is a very simple open-source tool
+            that hastens your search for the next move that will make you win a quick game, or maybe just 
+            find something new and interesting to add to your repertoire. Its core revolves around calculating
+            a rarity score and an interest score for rare moves in a game. You can find more info here.
+          </p>
+          <div class="nh-promo">
+            <div class="nh-promo__card">
+              <div class="nh-promo__icon">&#128214;</div>
+              <h3 class="nh-promo__title">Find Rare Moves</h3>
+              <p class="nh-promo__text">Upload a pgn file and it will find rare and (hopefully) interesting moves for you.</p>
+            </div>
+            <div class="nh-promo__card">
+              <div class="nh-promo__icon">&#128269;</div>
+              <h3 class="nh-promo__title">What makes a move rare?</h3>
+              <p class="nh-promo__text">To decide if a move is rare I take into consideration how many times the move was played vs how many
+                times the most popular move was played and how many games there were before and after the move.</p>
+            </div>
+            <div class="nh-promo__card">
+              <div class="nh-promo__icon">&#8252;</div>
+              <h3 class="nh-promo__title">What makes a move interesting?</h3>
+              <p class="nh-promo__text">Here I consider how late the rare move was played, the game result
+                and the engine's evaluation. I used Stockfish 18 Lite and considered the difference in evaluation between
+                when the move was played and 5 moves later.</p>
+            </div>
+          </div>
+          <a class="btn btn--primary nh-launch-btn" href="novelty-hunter.html">Open Novelty Hunter</a>
+        </div>
+      </section>
 
       <!-- CONTACT -->
       <section id="contact" class="section reveal">

@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Novelty Hunter — José Bárria</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600&display=swap"
+    rel="stylesheet">
+
+  <!-- Chessground CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/chessground/assets/chessground.base.css" />
+  <link rel="stylesheet" href="https://unpkg.com/chessground/assets/chessground.brown.css" />
+  <link rel="stylesheet" href="https://unpkg.com/chessground/assets/chessground.cburnett.css" />
+
+  <link rel="stylesheet" href="novelty-hunter.css" />
+</head>
+
+<body>
+  <!-- Ambient neon background -->
+  <div class="ambient" aria-hidden="true">
+    <div class="glow glow--a"></div>
+    <div class="glow glow--b"></div>
+    <div class="grid"></div>
+  </div>
+
+  <header class="header">
+    <div class="header__inner">
+      <a class="brand" href="index.html" aria-label="Go to Home">
+        <span class="brand__mark">&#9724;</span>
+        <span class="brand__text">José Bárria</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a class="nav__link" href="index.html#about">About me</a>
+        <a class="nav__link" href="index.html#career">My Career</a>
+        <a class="nav__link" href="index.html#contact">Contact</a>
+        <a class="nav__link nav__link--accent" href="novelty-hunter.html">Novelty Hunter <span class="badge-new">New!</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="nh-main">
+
+    <!-- ============ STATE 1: Upload ============ -->
+    <section id="upload-section" class="app-state active">
+      <div class="upload-container">
+        <h1 class="nh-logo">Novelty Hunter</h1>
+        <p class="nh-tagline">Find rare and interesting opening moves in master games</p>
+
+        <!-- Dropzone -->
+        <div id="dropzone" class="dropzone">
+          <div class="dropzone-content">
+            <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            <p>Drop a <strong>.pgn</strong> file here</p>
+            <p class="dropzone-hint">or <label class="file-label" for="file-input">browse</label></p>
+          </div>
+          <input type="file" id="file-input" accept=".pgn" hidden />
+          <p id="file-name" class="file-name"></p>
+        </div>
+
+        <!-- Settings -->
+        <div class="settings-panel">
+          <h3>Settings</h3>
+          <div class="settings-grid">
+            <div class="setting setting-full">
+              <label for="lichess-token">Lichess API Token</label>
+              <input type="password" id="lichess-token" placeholder="lip_..." autocomplete="off" />
+              <p class="toggle-hint">This is used to access the Lichess database. Get one at <a href="https://lichess.org/account/oauth/token"
+                  target="_blank" class="link-accent">lichess.org/account/oauth/token</a> (leave deafult settings).
+              </p>
+            </div>
+            <div class="setting">
+              <label for="min-elo">Minimum Elo</label>
+              <input type="number" id="min-elo" value="2400" min="0" max="3000" step="50" />
+            </div>
+            <div class="setting">
+              <label for="target-count">Novelties</label>
+              <input type="number" id="target-count" value="1" min="1" max="50" />
+            </div>
+            <div class="setting setting-toggle">
+              <div class="toggle-row">
+                <input type="checkbox" id="stockfish-toggle" checked />
+                <label for="stockfish-toggle">Stockfish evaluation</label>
+              </div>
+              <p class="toggle-hint">Uses browser-based engine (~12 MB download). Slower but more accurate scoring.</p>
+            </div>
+          </div>
+        </div>
+
+        <button id="analyze-btn" class="btn btn--primary nh-btn" disabled>Analyze</button>
+      </div>
+    </section>
+
+    <!-- ============ STATE 2: Analyzing ============ -->
+    <section id="analyzing-section" class="app-state">
+      <div class="analyzing-container">
+        <h2>Analyzing games...</h2>
+        <div class="progress-wrapper">
+          <div class="nh-progress-bar">
+            <div id="progress-fill" class="nh-progress-fill"></div>
+          </div>
+          <p id="progress-text" class="progress-text">Preparing...</p>
+        </div>
+        <div id="found-moves" class="found-moves"></div>
+        <button id="stop-btn" class="btn btn--ghost nh-btn-sm">Stop</button>
+      </div>
+    </section>
+
+    <!-- ============ STATE 3: Viewer ============ -->
+    <section id="viewer-section" class="app-state">
+      <!-- Board + sidebar -->
+      <div class="viewer-main">
+        <div class="board-col">
+          <div class="nav-indicator">
+            <span id="game-label" class="nav-label">Game 1 / 1</span>
+            <span class="keyboard-hint">&#8593;&#8595;</span>
+          </div>
+          <div class="board-wrapper">
+            <div id="board"></div>
+          </div>
+          <div class="nav-indicator">
+            <span id="move-label" class="nav-label">Start position</span>
+            <span class="keyboard-hint">&larr;&rarr;</span>
+          </div>
+        </div>
+
+        <div class="sidebar">
+          <div class="info-field">
+            <span class="info-label">Event</span>
+            <span id="info-event" class="info-value"></span>
+          </div>
+          <div class="info-field">
+            <span class="info-label">White</span>
+            <span id="info-white" class="info-value"></span>
+          </div>
+          <div class="info-field">
+            <span class="info-label">Black</span>
+            <span id="info-black" class="info-value"></span>
+          </div>
+          <div class="info-field">
+            <span class="info-label">Result</span>
+            <span id="info-result" class="info-value"></span>
+          </div>
+
+          <hr class="sidebar-divider" />
+
+          <div class="info-field">
+            <span class="info-label">Rare Move</span>
+            <span id="info-rare-move" class="info-value accent-value"></span>
+          </div>
+          <div class="info-field">
+            <span class="info-label">Frequency</span>
+            <span id="info-frequency" class="info-value"></span>
+          </div>
+          <div class="info-row">
+            <div class="info-field">
+              <span class="info-label">Master Games Before</span>
+              <span id="info-games-before" class="info-value"></span>
+            </div>
+            <div class="info-field">
+              <span class="info-label">Master Games After</span>
+              <span id="info-games-after" class="info-value"></span>
+            </div>
+          </div>
+
+          <hr class="sidebar-divider" />
+
+          <div class="info-field">
+            <span class="info-label">Initial Rarity Score</span>
+            <span id="info-rarity-score" class="info-value"></span>
+          </div>
+          <div class="info-row">
+            <div class="info-field">
+              <span id="label-eval-after" class="info-label">Eval after move</span>
+              <span id="info-eval-after" class="info-value"></span>
+            </div>
+            <div class="info-field">
+              <span id="label-eval-later" class="info-label">Eval 5 moves later</span>
+              <span id="info-eval-later" class="info-value"></span>
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="info-field">
+              <span class="info-label">Stockfish Score</span>
+              <span id="info-stockfish-score" class="info-value"></span>
+            </div>
+            <div class="info-field">
+              <span class="info-label">Result Score</span>
+              <span id="info-result-score" class="info-value"></span>
+            </div>
+          </div>
+          <div class="info-field">
+            <span class="info-label">Total Efficiency Score</span>
+            <span id="info-efficiency-score" class="info-value"></span>
+          </div>
+          <div class="info-field">
+            <span class="info-label">Final Interest Score</span>
+            <span id="info-interest-score" class="info-value accent-value"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Viewer actions -->
+      <div class="viewer-actions">
+        <button id="back-btn" class="btn btn--ghost nh-btn-sm">Back to Upload</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Libraries -->
+  <script type="module">
+
+    const scripts = [
+      "https://unpkg.com/chessground@8.2.1/dist/chessground.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js",
+      "js/stockfish-worker.js",
+      "js/scoring.js",
+      "js/analyzer.js",
+      "js/ui.js"
+    ];
+
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.onload = () => {
+          console.log(`[Loader] Loaded script: ${src}`);
+          resolve();
+        };
+        s.onerror = () => reject(new Error(`Failed to load ${src}`));
+        document.body.appendChild(s);
+      });
+    }
+
+    (async () => {
+      for (const src of scripts) {
+        try {
+          await loadScript(src);
+        } catch (err) {
+          console.error("[Loader] Script load failed:", err);
+          break;
+        }
+      }
+      // Initialize Chessground after all scripts are loaded
+      const boardEl = document.getElementById("board");
+      if (boardEl && window.Chessground) {
+        const board = Chessground(boardEl, {
+          // your config here, e.g.:
+          orientation: "white",
+          draggable: true,
+          highlight: true,
+        });
+        window.chessBoard = board; // optional, store globally
+      }
+    })();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh api:*)",
+      "WebFetch(domain:cdn.jsdelivr.net)",
+      "WebFetch(domain:data.jsdelivr.com)",
+      "Bash(xargs -I{} gh api repos/nmrugg/stockfish.js/git/blobs/{} --jq '.content')",
+      "Bash(curl -sI \"https://cdn.jsdelivr.net/npm/stockfish@18.0.5/bin/stockfish-18-single.js\")",
+      "Bash(curl -sI \"https://cdn.jsdelivr.net/npm/stockfish@18.0.5/bin/stockfish-18-single.wasm\")",
+      "Bash(curl -sI \"https://github.com/nmrugg/stockfish.js/releases/download/v18.0.0/stockfish-18-single.js\")",
+      "Bash(curl -sI \"https://github.com/nmrugg/stockfish.js/releases/download/v18.0.0/stockfish-18-single.wasm\")",
+      "Bash(curl -sI \"https://github.com/nmrugg/stockfish.js/releases/download/v18.0.0/stockfish-18-lite-single.js\")",
+      "Bash(curl -sI \"https://github.com/nmrugg/stockfish.js/releases/download/v18.0.0/stockfish-18-lite-single.wasm\")",
+      "Bash(curl -sI \"https://unpkg.com/stockfish@18.0.5/bin/stockfish-18-single.js\")",
+      "Bash(curl -sI \"https://unpkg.com/stockfish@18.0.5/bin/stockfish-18-lite-single.js\")"
+    ]
+  }
+}
