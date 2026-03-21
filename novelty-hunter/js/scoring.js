@@ -34,7 +34,7 @@ function computeEarlyNovScore(moveThreshold, moveNumber) {
 }
 
 function computeResultScore(result, whiteToMove) {
-  // bounded [-0.10, +0.10]
+  // bounded [-1, +1]
   let score = 0;
   if (whiteToMove) {
     if (result === "1-0")       score = 0.5;

@@ -263,7 +263,9 @@ async function getStockfishScore(moves, noveltyPly, whiteToMove, sfWorker, depth
 async function analyzeGames(pgnText, options, onProgress, abortCtrl, sfWorker) {
   const { minElo = 2400, target = 1, token = "", sfDepth = 10 } = options;
   const gamePgns = splitPgn(pgnText);
+  const fenCache = new Map();
   const results = [];
+  const scanStartTime = Date.now();
 
   // Quick pre-count of Elo-eligible games
   let totalGames = 0;
@@ -291,6 +293,8 @@ async function analyzeGames(pgnText, options, onProgress, abortCtrl, sfWorker) {
 
     eligibleDone++;
 
+    const gameStartTime = Date.now();
+
     // Parse game moves (with comment stripping + fallback)
     const history = parsePgnMoves(pgn);
     if (!history || history.length === 0) {
@@ -304,6 +308,7 @@ async function analyzeGames(pgnText, options, onProgress, abortCtrl, sfWorker) {
 
     // Replay the game to query positions
     const chess = new Chess();
+    let inCache = true; // stays true while positions are found in cache
     for (let mi = 0; mi < history.length; mi++) {
       if (abortCtrl.aborted) break;
 
@@ -316,9 +321,16 @@ async function analyzeGames(pgnText, options, onProgress, abortCtrl, sfWorker) {
       }
 
       const fen = chess.fen();
-      await sleep(50); // Polite rate limit
 
-      const movesData = await fetchLichessMoves(fen, token);
+      let movesData;
+      if (inCache && fenCache.has(fen)) {
+        movesData = fenCache.get(fen);
+      } else {
+        inCache = false;
+        await sleep(50); // Polite rate limit
+        movesData = await fetchLichessMoves(fen, token);
+        fenCache.set(fen, movesData);
+      }
 
       if (!movesData || !movesData.moves || movesData.moves.length === 0) {
         break; // Position not in Masters DB — stop checking this game
@@ -376,10 +388,15 @@ async function analyzeGames(pgnText, options, onProgress, abortCtrl, sfWorker) {
       chess.move(history[mi], { sloppy: true });
     }
 
+    const gameElapsed = Date.now() - gameStartTime;
+    console.log(`[Novelty Hunter] Game ${eligibleDone}/${totalGames} scanned in ${gameElapsed}ms — ${pgnHeader(pgn, "White")} vs ${pgnHeader(pgn, "Black")}`);
     onProgress(eligibleDone, totalGames, results);
   }
 
-  console.log(`[Novelty Hunter] Done. ${results.length} results. Eligible: ${totalGames}/${gamePgns.length}, skipped parse: ${skippedParse}.`);
+  const totalElapsed = Date.now() - scanStartTime;
+  const mins = Math.floor(totalElapsed / 60000);
+  const secs = ((totalElapsed % 60000) / 1000).toFixed(1);
+  console.log(`[Novelty Hunter] Done. ${results.length} results. Eligible: ${totalGames}/${gamePgns.length}, skipped parse: ${skippedParse}. Total time: ${mins}m ${secs}s`);
 
   results.sort((a, b) => b.interest_score - a.interest_score);
   return results;
