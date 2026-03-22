@@ -90,8 +90,6 @@
     const target = parseInt($("#target-count").value, 10) || 3;
     const useSf = $("#stockfish-toggle").checked;
     const sfDepth = parseInt($("#sf-depth").value, 10) || 10;
-    console.log("[App] Analyze clicked. Settings:", { minElo, target, useSf, sfDepth });
-
     // Save token to localStorage so user doesn't need to re-enter it
     try { localStorage.setItem("nh_lichess_token", token); } catch { }
 
@@ -108,7 +106,6 @@
       sfWorker = createStockfishWorker();
       try {
         await sfWorker.init();
-        console.log("[App] Stockfish initialized successfully");
       } catch (err) {
         console.error("[App] Stockfish initialization failed:", err);
         progressText.textContent = "Warning: Engine analysis unavailable. Continuing without Stockfish...";
@@ -163,12 +160,10 @@
 
   // ── Viewer ───────────────────────────────────────────────────
   function initViewer() {
-    console.log("[App] initViewer called, creating board...");
     showState(viewerSec);
 
     // Create Chessground instance (only once)
     if (!board) {
-      console.log("[Chessground] Initializing with element:", document.getElementById("board"));
       try {
         board = Chessground(document.getElementById("board"), {
           fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
@@ -196,7 +191,6 @@
             },
           },
         });
-        console.log("[Chessground] Board initialized successfully:", board);
       } catch (err) {
         console.error("[Chessground] Failed to initialize:", err);
         throw err;
@@ -204,7 +198,6 @@
     }
 
     chess = new Chess();
-    console.log("[App] Loading first game...");
     loadGame(0);
   }
 
@@ -257,14 +250,12 @@
   }
 
   function updateBoard() {
-    console.log("[App] updateBoard called, ply:", currentPly, "noveltyPly:", noveltyPly);
     // Replay moves to current ply
     chess.reset();
     for (let i = 0; i < currentPly; i++) {
       chess.move(moves[i]);
     }
     const turn = chess.turn() === "w" ? "white" : "black";
-    console.log("[Chessground] Setting position to fen:", chess.fen().substring(0, 40));
     board.set({
       fen: chess.fen(),
       turnColor: turn,
@@ -284,7 +275,6 @@
       }
       const moveObj = tmpChess.move(moves[noveltyPly]);
       if (moveObj) {
-        console.log("[Chessground] Highlighting novelty move:", moveObj.from, "to", moveObj.to);
         board.set({ lastMove: [moveObj.from, moveObj.to] });
       }
     } else {

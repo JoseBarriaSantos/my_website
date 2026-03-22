@@ -11,11 +11,9 @@ function computeRarityScore(frequency, followUpGames,
 
   // followUpScore: fewer follow-up games = rarer = higher. bounded ]0, 1]
   const followUpScore = Math.min(1, 1/followUpGames);
-  console.log(`follow up score: ${followUpScore}`)
 
   // frequencyScore: lower frequency = rarer = higher. bounded ]0, 1]
   const frequencyScore = 1 - (frequency/threshold);
-  console.log(`freq score: ${frequencyScore}`)
 
   return Math.round((0.5 * followUpScore + 0.5 * frequencyScore) * 1000) / 1000;
 }
@@ -45,7 +43,6 @@ function computeResultScore(result, whiteToMove) {
     else if (result === "1-0")  score = -0.5;
     else if (result === "1/2-1/2") score = 0.5;
   }
-  console.log(`result score: ${score}`)
   return score;
 }
 
@@ -56,7 +53,6 @@ function computeEfficiencyScore(result, whiteToMove, stockfishScore = null) {
     return Math.round(resultScore * 1000) / 1000;
   }
 
-  console.log(`stockfish score: ${stockfishScore}`)
   const normalizedStockfish = Math.max(-1, Math.min(1, stockfishScore / 2));
   return Math.round((0.8 * normalizedStockfish + 0.2 * resultScore) * 1000) / 1000;
 }
@@ -85,7 +81,7 @@ function getAllMoveInfo(moveSan, movesData, moveNumber, result, whiteToMove,
                        stockfishScore = null,
                        threshold = 0.05,
                        moveThreshold = 5) {
-  const pmTotalGames = sumMoveGames(movesData.moves[0]);
+  const gamesBefore = movesData['white'] + movesData['draws'] + movesData['black'];
   const movesDict = {};
   for (const m of movesData.moves) movesDict[m.san] = m;
 
@@ -106,5 +102,5 @@ function getAllMoveInfo(moveSan, movesData, moveNumber, result, whiteToMove,
   const earlyNovScore    = computeEarlyNovScore(moveThreshold, moveNumber)
   const interestScore   = computeInterestScore(rarityScore, efficiencyScore, earlyNovScore);
 
-  return { frequency, followUpGames, pmTotalGames, rarityScore, resultScore, efficiencyScore, earlyNovScore, interestScore, stockfishScore };
+  return { frequency, followUpGames, gamesBefore, rarityScore, resultScore, efficiencyScore, earlyNovScore, interestScore, stockfishScore };
 }

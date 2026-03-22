@@ -140,7 +140,6 @@ async function fetchLichessMoves(fen, token) {
     try {
       const resp = await fetch(url, { headers });
       if (resp.status === 429) {
-        console.log(`Rate limited (attempt ${attempt + 1}), waiting ${delay}ms...`);
         await sleep(delay);
         delay *= 2;
         continue;
@@ -180,8 +179,6 @@ async function stockfishEval(fen, depth, sfWorker) {
       clearTimeout(timeout);
       if (cp === null) {
         console.warn("[Stockfish] Evaluation returned null");
-      } else {
-        console.log(`[Stockfish] Evaluation result: ${cp} cp`);
       }
       resolve(cp);
     };
@@ -201,14 +198,12 @@ async function stockfishEval(fen, depth, sfWorker) {
  */
 async function getStockfishScore(moves, noveltyPly, whiteToMove, sfWorker, depth = 10) {
   if (!sfWorker) {
-    console.log("[Analysis] Stockfish not enabled, bonus = 0");
     return { bonus: 0.0, cpAfter: null, cpLater: null };
   }
 
   const afterPly = noveltyPly + 1;
   const laterPly = Math.min(afterPly + 10, moves.length);
   if (laterPly === afterPly) {
-    console.log("[Analysis] Game too short after novelty, bonus = 0");
     return { bonus: 0.0, cpAfter: null, cpLater: null };
   }
 
@@ -225,13 +220,6 @@ async function getStockfishScore(moves, noveltyPly, whiteToMove, sfWorker, depth
       chessLater.move(moves[i], { sloppy: true });
     }
 
-    // DEBUG: dump game moves and side to move before eval
-    console.log(`[DEBUG] All moves: ${moves.join(" ")}`);
-    console.log(`[DEBUG] Novelty ply: ${noveltyPly}, move: ${moves[noveltyPly]}`);
-    console.log(`[DEBUG] FEN after novelty: ${chessAfter.fen()}`);
-    console.log(`[DEBUG] Side to move after novelty: ${chessAfter.turn() === "w" ? "White" : "Black"}`);
-
-    console.log(`[Analysis] Computing Stockfish score for novelty at ply ${noveltyPly}`);
     const cpAfter = await stockfishEval(chessAfter.fen(), depth, sfWorker);
     const cpLater = await stockfishEval(chessLater.fen(), depth, sfWorker);
 
@@ -242,7 +230,6 @@ async function getStockfishScore(moves, noveltyPly, whiteToMove, sfWorker, depth
 
     const diff = (cpLater - cpAfter) / 100.0;
     const bonus = whiteToMove ? diff : -diff;
-    console.log(`[Analysis] Stockfish score calculated: after=${cpAfter}cp, later=${cpLater}cp, bonus=${bonus.toFixed(3)}`);
     return { bonus: Math.round(bonus * 100) / 100, cpAfter, cpLater };
   } catch (err) {
     console.error("[Analysis] Error computing Stockfish score:", err);
@@ -265,8 +252,6 @@ async function analyzeGames(pgnText, options, onProgress, abortCtrl, sfWorker) {
   const gamePgns = splitPgn(pgnText);
   const fenCache = new Map();
   const results = [];
-  const scanStartTime = Date.now();
-
   // Quick pre-count of Elo-eligible games
   let totalGames = 0;
   for (const pgn of gamePgns) {
@@ -292,8 +277,6 @@ async function analyzeGames(pgnText, options, onProgress, abortCtrl, sfWorker) {
     }
 
     eligibleDone++;
-
-    const gameStartTime = Date.now();
 
     // Parse game moves (with comment stripping + fallback)
     const history = parsePgnMoves(pgn);
@@ -366,7 +349,7 @@ async function analyzeGames(pgnText, options, onProgress, abortCtrl, sfWorker) {
           move_number: fullMoveNumber,
           white_to_move: whiteToMove,
           frequency: info.frequency,
-          games_before: info.pmTotalGames,
+          games_before: info.gamesBefore,
           games_after: info.followUpGames,
           rarity_score: info.rarityScore,
           result_score: info.resultScore,
@@ -381,22 +364,14 @@ async function analyzeGames(pgnText, options, onProgress, abortCtrl, sfWorker) {
           moves: history,
         });
 
-        console.log(`[Novelty Hunter] Found rare move: ${fullMoveNumber}.${moveSan} in ${pgnHeader(pgn, "White")} vs ${pgnHeader(pgn, "Black")}`);
         break; // Only first rare move per game
       }
 
       chess.move(history[mi], { sloppy: true });
     }
 
-    const gameElapsed = Date.now() - gameStartTime;
-    console.log(`[Novelty Hunter] Game ${eligibleDone}/${totalGames} scanned in ${gameElapsed}ms — ${pgnHeader(pgn, "White")} vs ${pgnHeader(pgn, "Black")}`);
     onProgress(eligibleDone, totalGames, results);
   }
-
-  const totalElapsed = Date.now() - scanStartTime;
-  const mins = Math.floor(totalElapsed / 60000);
-  const secs = ((totalElapsed % 60000) / 1000).toFixed(1);
-  console.log(`[Novelty Hunter] Done. ${results.length} results. Eligible: ${totalGames}/${gamePgns.length}, skipped parse: ${skippedParse}. Total time: ${mins}m ${secs}s`);
 
   results.sort((a, b) => b.interest_score - a.interest_score);
   return results;
